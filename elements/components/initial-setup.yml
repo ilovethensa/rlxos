@@ -3,7 +3,8 @@ version: 0.0.5
 about: System Initial Setup
 
 variables:
-  commit: 8d9a5e8dfe4d9841b9369ed1a3bfb289e47dd11f
+  commit: f7073c684bd2e863419f764e8a3de4394d42e94d
+  release: 2
 
 pre-script: |-
   sed -i 's#xfce4-session-logout#xfce4-session-logout --logout#g' src/Page/Summary/Summary.cxx
@@ -70,6 +71,20 @@ post-script: |-
   [user]
   pinned=/usr/share/applications/xfce4-terminal.desktop;/apps/share/applications/firefox.desktop;/usr/share/applications/gparted.desktop;/usr/share/applications/initial-setup.desktop;
   EOF
+
+  install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-screensaver.xml << "EOF"
+  <?xml version="1.0" encoding="UTF-8"?>
+  <channel name="xfce4-screensaver" version="1.0">
+    <property name="saver" type="empty">
+      <property name="mode" type="int" value="0"/>
+      <property name="enabled" type="bool" value="false"/>
+    </property>
+    <property name="lock" type="empty">
+      <property name="enabled" type="bool" value="false"/>
+    </property>
+  </channel>
+  EOF
+
 
   install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
